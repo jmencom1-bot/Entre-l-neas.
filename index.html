@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090b14">
+  <meta name="description" content="Hay cosas que se entienden mejor entre líneas.">
+  <title>Entre líneas — Para Len</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap');
+    :root{--bg:#090b14;--panel:#111522;--text:#f4f1ed;--muted:#a5a8b7;--pink:#e9a8bd;--violet:#a99cf5;--line:rgba(255,255,255,.1)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 15% 10%,rgba(169,156,245,.13),transparent 34%),radial-gradient(ellipse at 85% 45%,rgba(233,168,189,.1),transparent 32%),var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.23;background-image:radial-gradient(#fff 1px,transparent 1px);background-size:53px 53px;mask-image:linear-gradient(to bottom,black,transparent 85%)}
+    .wrap{width:min(920px,calc(100% - 38px));margin:auto;position:relative;z-index:1}
+    nav{height:76px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+    .brand{color:var(--text);font-weight:700;letter-spacing:.22em}.brand span{color:var(--pink)}
+    .tiny{font-size:.72rem;color:var(--muted);letter-spacing:.08em}
+    .hero{min-height:calc(100svh - 76px);display:grid;align-content:center;text-align:center;padding:76px 0 90px}
+    .eyebrow{color:var(--pink);font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;margin-bottom:25px}
+    h1{font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(3.5rem,11vw,7.5rem);line-height:.98;letter-spacing:-.055em;margin:0}
+    h1 em{color:var(--pink);font-weight:500}
+    .intro{max-width:540px;margin:28px auto 0;color:#c4c5ce;font-size:1.02rem;line-height:1.9}
+    .actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:35px}
+    button,.linkbtn{font:600 .82rem 'DM Sans',sans-serif;letter-spacing:.04em;border:1px solid rgba(233,168,189,.55);border-radius:999px;padding:14px 22px;background:linear-gradient(110deg,rgba(233,168,189,.16),rgba(169,156,245,.13));color:var(--text);cursor:pointer;transition:.25s;text-decoration:none}
+    button:hover,.linkbtn:hover{transform:translateY(-3px);border-color:var(--pink);box-shadow:0 10px 35px rgba(233,168,189,.12)}
+    .ghost{background:transparent;border-color:var(--line);color:var(--muted)}
+    .scroll{margin-top:64px;color:#777d90;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase}
+    section{padding:85px 0}
+    .section-head{text-align:center;margin-bottom:34px}
+    .section-head h2{font:500 clamp(2rem,6vw,3.2rem) 'Playfair Display',serif;margin:8px 0}
+    .section-head p{color:var(--muted);line-height:1.7;margin:0}
+    .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+    .card{background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018));border:1px solid var(--line);border-radius:18px;padding:25px;min-height:160px;display:flex;flex-direction:column;justify-content:space-between;transition:.3s}
+    .card:hover{transform:translateY(-4px);border-color:rgba(233,168,189,.38)}
+    .card small{color:var(--pink);letter-spacing:.17em;text-transform:uppercase;font-size:.65rem}
+    .card p{font:500 1.2rem/1.55 'Playfair Display',serif;margin:22px 0 0}
+    .wide{grid-column:1/-1;min-height:130px}
+    .reveal-box{max-width:620px;margin:auto;text-align:center;border:1px solid rgba(169,156,245,.25);background:rgba(17,21,34,.72);border-radius:22px;padding:34px 25px}
+    .reveal-box .secret{font:italic 1.45rem/1.6 'Playfair Display',serif;min-height:76px;display:grid;place-items:center;color:#e7d9e4;margin:15px 0}
+    .counter{font-size:.7rem;color:#85899c;letter-spacing:.15em}
+    .note{max-width:660px;margin:auto;text-align:center;color:#c3c4ce;line-height:2;font-size:.98rem}
+    .note strong{color:var(--pink);font-weight:600}
+    footer{border-top:1px solid var(--line);padding:32px 0 45px;text-align:center;color:#777d90;font-size:.75rem;line-height:1.9}
+    .heart{color:var(--pink)}
+    .toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,20px);background:#1a2030;border:1px solid var(--line);padding:12px 18px;border-radius:99px;color:#eee;font-size:.8rem;opacity:0;pointer-events:none;transition:.3s;z-index:5;white-space:nowrap}.toast.show{opacity:1;transform:translate(-50%,0)}
+    @media(max-width:600px){nav{height:64px}.tiny{font-size:.62rem}.hero{min-height:calc(91svh - 64px);padding:60px 0}.intro{font-size:.94rem}.cards{grid-template-columns:1fr}.wide{grid-column:auto}.card{min-height:135px}.card p{font-size:1.12rem}section{padding:65px 0}.reveal-box{padding:28px 19px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav><div class="brand">ENTRE<span>.</span>LÍNEAS</div><div class="tiny">un pequeño desorden bien intencionado</div></nav>
+    <main>
+      <header class="hero">
+        <div class="eyebrow">No todo necesita decirse directamente</div>
+        <h1>Hay cosas<br>que van <em>entre líneas.</em></h1>
+        <p class="intro">Y luego estás tú, que tienes esa extraña habilidad de aparecer en mis pensamientos sin siquiera estar haciendo nada. Bastante sospechoso, la verdad.</p>
+        <div class="actions">
+          <button onclick="document.querySelector('#expediente').scrollIntoView({behavior:'smooth'})">A ver, ¿qué hay aquí?</button>
+          <button class="ghost" onclick="toast('Tranquila, no hay examen al final. Creo. 😌')">No me da confianza</button>
+        </div>
+        <div class="scroll">desliza con curiosidad ↓</div>
+      </header>
+
+      <section id="expediente">
+        <div class="section-head"><div class="eyebrow">Archivo confidencial · caso L</div><h2>Observaciones no solicitadas</h2><p>Después de una investigación rigurosamente poco profesional, se encontraron estos detalles.</p></div>
+        <div class="cards">
+          <article class="card"><small>Hallazgo 01</small><p>Qué peligro que alguien pueda mejorar un día normal con un simple mensaje.</p></article>
+          <article class="card"><small>Hallazgo 02</small><p>Hay personas que llegan y se vuelven costumbre. Y no, no estoy señalando a nadie. 👀</p></article>
+          <article class="card"><small>Hallazgo 03</small><p>Tu sentido del humor debería venir con advertencia. Uno termina riéndose cuando se supone que debía estar serio.</p></article>
+          <article class="card"><small>Hallazgo 04</small><p>Algunas conversaciones no tienen hora de cierre. Qué falta de organización la nuestra.</p></article>
+          <article class="card wide"><small>Conclusión preliminar</small><p>Se recomienda no tomar distancia de la persona investigada. El equipo de investigación se ha encariñado con el caso.</p></article>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head"><div class="eyebrow">Presiona bajo tu propio riesgo</div><h2>Cosas que no voy a admitir</h2><p>Bueno… quizá una que otra. Tampoco prometí ser convincente.</p></div>
+        <div class="reveal-box">
+          <div class="counter" id="count">ARCHIVO 01 / 06</div>
+          <div class="secret" id="secret">A veces reviso si ya respondiste. Qué coincidencia que justo tenía el chat abierto.</div>
+          <button onclick="nextSecret()">Siguiente evidencia ↗</button>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head"><div class="eyebrow">Una aclaración innecesaria</div><h2>Por si quedaban dudas</h2></div>
+        <p class="note">Esto no es una declaración formal, ni una solicitud, ni un intento de soborno emocional. Es solamente una pequeña forma de decir que <strong>me gusta tenerte por aquí</strong>, que nuestras conversaciones tienen un lugar especial en mis días y que, aunque a veces me haga el desentendido, hay personas que uno agradece haberse encontrado.<br><br>Y ya. No le busques tanta ciencia… aunque si llegaste hasta aquí, claramente tienes curiosidad. <span class="heart">♡</span></p>
+      </section>
+
+      <section>
+        <div class="reveal-box">
+          <div class="eyebrow">Última notificación</div>
+          <h2 style="font:500 2rem 'Playfair Display',serif;margin:8px 0 15px">Len, una cosita…</h2>
+          <p style="color:#c4c5ce;line-height:1.8">Si te sacó una sonrisa, misión cumplida. Si te hizo pensar en alguien, yo no vi nada. 🤫</p>
+          <button onclick="finalMessage()">No te hagas, di algo</button>
+          <p id="final" style="font:italic 1.25rem 'Playfair Display',serif;color:var(--pink);min-height:30px;margin:20px 0 0"></p>
+        </div>
+      </section>
+    </main>
+    <footer>Hecho con demasiada intención para alguien que supuestamente no iba a hacer nada.<br><span class="heart">♡</span> Fin del comunicado. Por ahora.</footer>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script>
+    const secrets=[
+      'A veces reviso si ya respondiste. Qué coincidencia que justo tenía el chat abierto.',
+      'Hay audios que podrían durar cinco minutos y aun así se sienten cortos.',
+      'Me sé algunas de tus expresiones. No es obsesión, es… memoria de calidad.',
+      'Si algo me recuerda a ti, probablemente te lo termine contando. Probablemente.',
+      'No todas las personas se vuelven parte de la rutina. Tú tienes cierta ventaja.',
+      'Y sí, esta página tiene destinataria. Qué buena detective.'
+    ];
+    let current=0;
+    function nextSecret(){current=(current+1)%secrets.length;document.getElementById('secret').animate([{opacity:0,transform:'translateY(8px)'},{opacity:1,transform:'translateY(0)'}],{duration:350});document.getElementById('secret').textContent=secrets[current];document.getElementById('count').textContent='ARCHIVO '+String(current+1).padStart(2,'0')+' / 06'}
+    function toast(message){const el=document.getElementById('toast');el.textContent=message;el.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>el.classList.remove('show'),2600)}
+    function finalMessage(){document.getElementById('final').textContent='Te quiero, boba. Pero eso ya lo sabías. ♡';}
+  </script>
+</body>
+</html>
