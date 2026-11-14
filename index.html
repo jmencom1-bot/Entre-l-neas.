@@ -44,6 +44,21 @@
     .heart{color:var(--pink)}
     .toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,20px);background:#1a2030;border:1px solid var(--line);padding:12px 18px;border-radius:99px;color:#eee;font-size:.8rem;opacity:0;pointer-events:none;transition:.3s;z-index:5;white-space:nowrap}.toast.show{opacity:1;transform:translate(-50%,0)}
     @media(max-width:600px){nav{height:64px}.tiny{font-size:.62rem}.hero{min-height:calc(91svh - 64px);padding:60px 0}.intro{font-size:.94rem}.cards{grid-template-columns:1fr}.wide{grid-column:auto}.card{min-height:135px}.card p{font-size:1.12rem}section{padding:65px 0}.reveal-box{padding:28px 19px}}
+
+    .game-panel{max-width:680px;margin:auto;padding:22px;border:1px solid rgba(233,168,189,.25);border-radius:22px;background:rgba(17,21,34,.78)}
+    .game-stats{display:flex;justify-content:space-between;gap:12px;margin-bottom:14px;color:var(--muted);font-size:.78rem;letter-spacing:.08em}
+    .game-stats strong{color:var(--pink);font-size:1rem}
+    .gamefield{height:290px;position:relative;overflow:hidden;border:1px solid var(--line);border-radius:16px;background:radial-gradient(ellipse at 50% 100%,rgba(169,156,245,.16),transparent 65%),linear-gradient(180deg,#111522,#0c101c);touch-action:pan-y}
+    .gamefield:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:28px 28px;pointer-events:none}
+    .falling{position:absolute;top:-44px;left:var(--x);font-size:2rem;line-height:1;cursor:pointer;user-select:none;filter:drop-shadow(0 5px 9px rgba(233,168,189,.22));animation:fall var(--duration) linear forwards;z-index:2}
+    .falling:active{transform:scale(1.3)}
+    @keyframes fall{to{top:310px;transform:rotate(18deg)}}
+    .game-help{text-align:center;color:var(--muted);font-size:.83rem;line-height:1.7;margin:15px 0}
+    .game-result{min-height:48px;text-align:center;color:var(--pink);font:italic 1.15rem/1.5 'Playfair Display',serif;margin:12px 0}
+    .game-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+    .gamefield.paused:after{content:"Pulsa «Empezar» para jugar";position:absolute;inset:0;display:grid;place-items:center;color:#c4c5ce;font-size:.9rem;background:rgba(9,11,20,.45);z-index:3}
+    @media(max-width:600px){.game-panel{padding:15px}.gamefield{height:270px}.game-stats{font-size:.7rem}}
+
   </style>
 </head>
 <body>
@@ -60,6 +75,18 @@
         </div>
         <div class="scroll">desliza con curiosidad ↓</div>
       </header>
+
+
+      <section id="minijuego">
+        <div class="section-head"><div class="eyebrow">Minijuego · nivel 01</div><h2>Atrapa lo que no digo</h2><p>Hay cosas que merecen ser atrapadas… y otras que es mejor dejar pasar. 👀</p></div>
+        <div class="game-panel">
+          <div class="game-stats"><span>PUNTOS: <strong id="gameScore">0</strong> / 10</span><span>TIEMPO: <strong id="gameTime">25</strong>s</span></div>
+          <div class="gamefield paused" id="gamefield" aria-label="Zona del minijuego"></div>
+          <p class="game-help">Toca los 💗 y ✨ para sumar puntos. Evita los 👀, que son demasiado chismosos. Tienes 25 segundos.</p>
+          <div class="game-actions"><button id="gameStart" onclick="startGame()">Empezar a jugar</button></div>
+          <p class="game-result" id="gameResult" aria-live="polite"></p>
+        </div>
+      </section>
 
       <section id="expediente">
         <div class="section-head"><div class="eyebrow">Archivo confidencial · caso L</div><h2>Observaciones no solicitadas</h2><p>Después de una investigación rigurosamente poco profesional, se encontraron estos detalles.</p></div>
@@ -112,6 +139,61 @@
     function nextSecret(){current=(current+1)%secrets.length;document.getElementById('secret').animate([{opacity:0,transform:'translateY(8px)'},{opacity:1,transform:'translateY(0)'}],{duration:350});document.getElementById('secret').textContent=secrets[current];document.getElementById('count').textContent='ARCHIVO '+String(current+1).padStart(2,'0')+' / 06'}
     function toast(message){const el=document.getElementById('toast');el.textContent=message;el.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>el.classList.remove('show'),2600)}
     function finalMessage(){document.getElementById('final').textContent='Te quiero, boba. Pero eso ya lo sabías. ♡';}
+
+    let gameScore=0,gameTime=25,gameSpawn=null,gameClock=null,gameRunning=false;
+    function startGame(){
+      const field=document.getElementById('gamefield');
+      clearInterval(gameSpawn);clearInterval(gameClock);
+      field.innerHTML='';field.classList.remove('paused');
+      gameScore=0;gameTime=25;gameRunning=true;
+      document.getElementById('gameScore').textContent=gameScore;
+      document.getElementById('gameTime').textContent=gameTime;
+      document.getElementById('gameResult').textContent='';
+      document.getElementById('gameStart').textContent='Volver a empezar';
+      spawnGameObject();
+      gameSpawn=setInterval(spawnGameObject,620);
+      gameClock=setInterval(()=>{
+        gameTime--;
+        document.getElementById('gameTime').textContent=gameTime;
+        if(gameTime<=0)endGame();
+      },1000);
+    }
+    function spawnGameObject(){
+      if(!gameRunning)return;
+      const field=document.getElementById('gamefield');
+      const good=Math.random()>.28;
+      const item=document.createElement('span');
+      item.className='falling';
+      item.textContent=good?(Math.random()>.5?'💗':'✨'):'👀';
+      item.style.setProperty('--x',(4+Math.random()*84)+'%');
+      item.style.setProperty('--duration',(2.1+Math.random()*.8)+'s');
+      item.setAttribute('role','button');item.setAttribute('aria-label',good?'Atrapar':'Evitar');
+      item.addEventListener('click',()=>{
+        if(!gameRunning)return;
+        if(good){gameScore++;toast(['Buena captura. 😌','Esa sí era importante.','Uy, esa casi se escapa.'][Math.floor(Math.random()*3)]);}
+        else {gameScore=Math.max(0,gameScore-2);toast('¡Esa no! Era puro chisme. 👀');}
+        document.getElementById('gameScore').textContent=gameScore;
+        item.remove();
+        if(gameScore>=10)endGame(true);
+      });
+      item.addEventListener('animationend',()=>item.remove());
+      field.appendChild(item);
+    }
+    function endGame(won=false){
+      gameRunning=false;clearInterval(gameSpawn);clearInterval(gameClock);
+      document.getElementById('gamefield').classList.add('paused');
+      document.getElementById('gamefield').innerHTML='';
+      const result=document.getElementById('gameResult');
+      if(won||gameScore>=10){
+        result.textContent='¡Lo lograste! Aunque atrapar indirectas se te da sospechosamente bien… 💗';
+        result.textContent+=' La sorpresa: hay personas que hacen que hasta un juego tonto valga la pena. Tú eres una de ellas. ♡';
+        toast('Sorpresa desbloqueada. No te acostumbres. 🤫');
+      }else{
+        result.textContent='Se acabó el tiempo. '+gameScore+' puntos. ¿Otra oportunidad? Yo sé que puedes.';
+      }
+      document.getElementById('gameStart').textContent='Jugar otra vez';
+    }
+
   </script>
 </body>
 </html>
